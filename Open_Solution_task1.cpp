@@ -1,0 +1,228 @@
+#include "Car.h"
+#include "Plane.h"
+#include "Boat.h"
+#include "Spaceship.h"
+#include <iostream>
+#include <locale.h>
+#include <vector>
+#include <memory>
+#include <iomanip>
+#include <algorithm>
+void fill_blank(Transport* transport) {
+	std::cout << "Введите уникальный идентификатор (числовой) транспорта:";
+	std::cin >> (*transport).unique_identificator;
+	std::cout << "Введите вес транспорта:";
+	std::cin >> (*transport).weight;
+	std::cout << "Введите год выпуска:";
+	std::cin >> (*transport).year_manufacture;
+	std::cout << "Введите марку транспорта:";
+	std::cin >> (*transport).brand;
+	std::cout << "Введите модель транспорта:";
+	std::cin >> (*transport).model;
+}
+void print_data_base(std::vector<Transport*> table) {
+	std::cout << "					Таблица записей" << std::endl;
+	int i = 1;
+	for (auto iter = table.begin(); iter != table.end(); iter++, i++) {
+		std::cout << "Номер записи:" << i << std::endl;
+		std::cout << "Уникальный идентификатор транспорта:" << (*iter)->unique_identificator << std::endl;
+		std::cout << "Тип транспорта:" << (*iter)->type_transport << std::endl;
+		std::cout << "Вес транспорта:" << (*iter)->weight << std::endl;
+		std::cout << "Год выпуска транспорта:" << (*iter)->year_manufacture << std::endl;
+		std::cout << "Марка транспорта:" << (*iter)->brand << std::endl;
+		std::cout << "Модель транспорта:" << (*iter)->model << std::endl << std::endl;
+	}
+}
+bool comp_id(Transport *a, Transport* b) {
+	return (*a).unique_identificator < (*b).unique_identificator;
+}
+bool comp_type(Transport* a, Transport* b) {
+	return (*a).type_transport < (*b).type_transport;
+}
+bool comp_weight(Transport* a, Transport* b) {
+	return (*a).type_transport < (*b).type_transport;
+}
+bool comp_year(Transport* a, Transport* b) {
+	return (*a).year_manufacture < (*b).year_manufacture;
+}
+bool comp_brand(Transport* a, Transport* b) {
+	return (*a).brand < (*b).brand;
+}
+bool comp_model(Transport* a, Transport* b) {
+	return (*a).model < (*b).model;
+}
+int main()
+{
+	setlocale(LC_ALL, "Rus");
+	int k = 1; // Переменная для работы цикла
+	int choice;// Переменная для выбора с действиями таблицы
+	int type_choice; // Переменная для выбора типа траснпорта, который хотим создать
+	std::vector<Transport *> data_base; // Таблица записей
+	
+	while (k) {
+		std::cout << "Нажмите 1, если хотите создать запись транспортного средства." << std::endl
+			<< "Нажмите 2, если хотите редактировать запись транспортного средства." << std::endl
+			<< "Нажмите 3, если хотите удалить запись транспортного средства." << std::endl
+			<< "Нажмите 4, если хотите отобразить весь список записей с сортировкой по выбранному полю." << std::endl
+			<< "Нажмите 5, если выполнить поиск по выбранному полю." << std::endl
+			<< "Нажмите 6, если хотите сохранить все записи в файл." << std::endl
+			<< "Нажмите 7, если хотите загрузить все записи из файла." << std::endl;
+		std::cin >> choice;
+		switch (choice) {
+		case 1:
+		{	
+			std::cout << "Нажмите 1, если хотите создать машину." << std::endl
+				<< "Нажмите 2, если хотите создать самолет." << std::endl
+				<< "Нажмите 3, если хотите создать катер." << std::endl
+				<< "Нажмите 4, если хотите создать космический корабль." << std::endl;
+			std::cin >> type_choice;
+			switch (type_choice) {
+			case 1:
+			{
+				Car *a = new Car();
+				(*a).type_transport = "Машина";
+				fill_blank(a);
+				std::cout << "Введите объём двигателя транспорта:";
+				std::cin >> (*a).engine_size;
+				std::cout << "Введите количество лошадиных сил транспорта:";
+				std::cin >> (*a).horsepower;
+				data_base.push_back(a);
+				break;
+			}
+			case 2:
+			{
+				Plane* a = new Plane();
+				(*a).type_transport = "Самолёт";
+				fill_blank(a);
+				std::cout << "Введите грузоподъмность самолёта:";
+				std::cin >> (*a).load_capacity;
+				std::cout << "Введите размах крыла самолёта:";
+				std::cin >> (*a).wingspan;
+				data_base.push_back(a);
+				break;
+			}
+			case 3:
+			{
+				Boat* a = new Boat();
+				(*a).type_transport = "Катер";
+				fill_blank(a);
+				std::cout << "Введите глубину погружения винта катера:";
+				std::cin >> (*a).screw_inmmersion_depth;
+				data_base.push_back(a);
+				break;
+			}
+			case 4: 
+			{
+				Spaceship* a = new Spaceship();
+				(*a).type_transport = "Космический корабль";
+				fill_blank(a);
+				std::cout << "Введите тип топлива космического корабля:";
+				std::cin >> (*a).fuel_type;
+				data_base.push_back(a);
+				break;
+			}
+		}
+			break;
+			
+		}	
+		case 2:
+		{
+			print_data_base(data_base);
+			int unique_id;
+			std::cout << "Введите уникальный индетификатор транспорта, информацию о котором вы хотите отредактировать:";
+			std::cin >> unique_id;
+			int temp;
+			for (auto iter = data_base.begin(); iter != data_base.end(); iter++) {
+				if ((*iter)->unique_identificator == unique_id) temp = iter - data_base.begin();
+			}
+			std::cout << "Введите 1, если хотите изменить уникальный идентификатор (числовой) транспорта." << std::endl
+				<< "Введите 2, если хотите изменить вес транспорта." << std::endl
+				<< "Введите 3, если хотите изменить год выпуска." << std::endl
+				<< "Введите 4, если хотите изменить марку транспорта." << std::endl
+				<< "Введите 5, если хотите изменить модель транспорта." << std::endl
+				<< "Введите 6, если хотите изменить дополнительные свойства транспорта." << std::endl;
+			int choice_change;
+			std::cin >> choice_change;
+			switch (choice_change) {
+			case 1:
+				std::cout << "Введите новый уникальный идентификатор (числовой) транспорта:";
+				std::cin >> (*(data_base[temp])).unique_identificator;
+				break;
+			case 2:
+				std::cout << "Введите новый вес транспорта:";
+				std::cin >> (*(data_base[temp])).weight;
+				break;
+			case 3:
+				std::cout << "Введите новый год выпуска:";
+				std::cin >> (*(data_base[temp])).year_manufacture;
+				break;
+			case 4:
+				std::cout << "Введите новую марку транспорта:";
+				std::cin >> (*(data_base[temp])).brand;
+				break;
+			case 5:
+				std::cout << "Введите новую модель транспорта:";
+				std::cin >> (*(data_base[temp])).model;
+				break;
+			}
+			break;
+		}
+			
+		case 3:
+		{
+			print_data_base(data_base);
+			int unique_id;
+			std::cout << "Введите уникальный индетификатор транспорта, ззапись которого хотите удалить из таблицы:";
+			std::cin >> unique_id;
+			int temp;
+			for (auto iter = data_base.begin(); iter != data_base.end(); iter++) {
+				if ((*iter)->unique_identificator == unique_id) {
+					data_base.erase(iter);
+					break;
+				}
+			}
+			break;
+		}
+		case 4:
+		{
+			std::cout << "Введите 1, если хотите сделать сортировку по уникальному идентификатору." << std::endl
+				<< "Введите 2, если хотите сделать сортировку по весу транспорта." << std::endl
+				<< "Введите 3, если хотите сделать сортировку по году выпуска." << std::endl
+				<< "Введите 4, если хотите сделать сортировку по марке транспорта." << std::endl
+				<< "Введите 5, если хотите сделать сортировку по модели транспорта." << std::endl;
+			int choice_change;
+			std::cin >> choice_change;
+			switch (choice_change) {
+			case 1:
+				sort(data_base.begin(), data_base.end(), comp_id);
+				break;
+			case 2:
+				sort(data_base.begin(), data_base.end(), comp_weight);
+				break;
+			case 3:
+				sort(data_base.begin(), data_base.end(), comp_year);
+				break;
+			case 4:
+				sort(data_base.begin(), data_base.end(), comp_brand);
+				break;
+			case 5:
+				sort(data_base.begin(), data_base.end(), comp_model);
+				break;
+			case 6:
+				break;
+			}
+			print_data_base(data_base);
+			break;
+		}
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		}
+		std::cout << "Нажмите 1 - если хотите совершить какие-то дальнейшие действия с таблицей, 0 - если хотите завершить программу."<<std::endl;
+		std::cin >> k;
+	}
+}
+
