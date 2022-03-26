@@ -3,11 +3,13 @@
 #include "Boat.h"
 #include "Spaceship.h"
 #include <iostream>
-#include <locale.h>
+#include <windows.h>
 #include <vector>
 #include <memory>
 #include <iomanip>
 #include <algorithm>
+#include <fstream>
+
 void fill_blank(Transport* transport) {
 	std::cout << "Введите уникальный идентификатор (числовой) транспорта:";
 	std::cin >> (*transport).unique_identificator;
@@ -33,6 +35,21 @@ void print_data_base(std::vector<Transport*> table) {
 		std::cout << "Модель транспорта:" << (*iter)->model << std::endl << std::endl;
 	}
 }
+void print_data_base_infile(std::vector<Transport*> table) {
+	std::fstream inOut;
+	inOut.open("file.txt", std::ios::out);
+	inOut << "					Таблица записей" << std::endl;
+	int i = 1;
+	for (auto iter = table.begin(); iter != table.end(); iter++, i++) {
+		inOut << "Номер записи:" << i << std::endl;
+		inOut << "Уникальный идентификатор транспорта:" << (*iter)->unique_identificator << std::endl;
+		inOut << "Тип транспорта:" << (*iter)->type_transport << std::endl;
+		inOut << "Вес транспорта:" << (*iter)->weight << std::endl;
+		inOut << "Год выпуска транспорта:" << (*iter)->year_manufacture << std::endl;
+		inOut << "Марка транспорта:" << (*iter)->brand << std::endl;
+		inOut << "Модель транспорта:" << (*iter)->model << std::endl << std::endl;
+	}
+}
 bool comp_id(Transport *a, Transport* b) {
 	return (*a).unique_identificator < (*b).unique_identificator;
 }
@@ -51,9 +68,18 @@ bool comp_brand(Transport* a, Transport* b) {
 bool comp_model(Transport* a, Transport* b) {
 	return (*a).model < (*b).model;
 }
+void print_transport(Transport* a) {
+	std::cout << "Уникальный идентификатор транспорта:" << (*a).unique_identificator << std::endl;
+	std::cout << "Тип транспорта:" << (*a).type_transport << std::endl;
+	std::cout << "Вес транспорта:" << (*a).weight << std::endl;
+	std::cout << "Год выпуска транспорта:" << (*a).year_manufacture << std::endl;
+	std::cout << "Марка транспорта:" << (*a).brand << std::endl;
+	std::cout << "Модель транспорта:" << (*a).model << std::endl << std::endl;
+}
 int main()
 {
-	setlocale(LC_ALL, "Rus");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	int k = 1; // Переменная для работы цикла
 	int choice;// Переменная для выбора с действиями таблицы
 	int type_choice; // Переменная для выбора типа траснпорта, который хотим создать
@@ -174,7 +200,6 @@ int main()
 			int unique_id;
 			std::cout << "Введите уникальный индетификатор транспорта, ззапись которого хотите удалить из таблицы:";
 			std::cin >> unique_id;
-			int temp;
 			for (auto iter = data_base.begin(); iter != data_base.end(); iter++) {
 				if ((*iter)->unique_identificator == unique_id) {
 					data_base.erase(iter);
@@ -189,7 +214,8 @@ int main()
 				<< "Введите 2, если хотите сделать сортировку по весу транспорта." << std::endl
 				<< "Введите 3, если хотите сделать сортировку по году выпуска." << std::endl
 				<< "Введите 4, если хотите сделать сортировку по марке транспорта." << std::endl
-				<< "Введите 5, если хотите сделать сортировку по модели транспорта." << std::endl;
+				<< "Введите 5, если хотите сделать сортировку по модели транспорта." << std::endl
+				<< "Введите 6, если хотите сделать сортировку по типу транспорта." << std::endl;
 			int choice_change;
 			std::cin >> choice_change;
 			switch (choice_change) {
@@ -209,15 +235,113 @@ int main()
 				sort(data_base.begin(), data_base.end(), comp_model);
 				break;
 			case 6:
+				sort(data_base.begin(), data_base.end(), comp_type);
 				break;
 			}
 			print_data_base(data_base);
 			break;
 		}
 		case 5:
+			std::cout << "Введите 1, если хотите сделать поиск по уникальному идентификатору." << std::endl
+				<< "Введите 2, если хотите сделать поиск по весу транспорта." << std::endl
+				<< "Введите 3, если хотите сделать поиск по году выпуска." << std::endl
+				<< "Введите 4, если хотите сделать поиск по марке транспорта." << std::endl
+				<< "Введите 5, если хотите сделать поиск по модели транспорта." << std::endl
+				<< "Введите 6, если хотите сделать поиск по типу транспорта." << std::endl;
+			int choice_change;
+			std::cin >> choice_change;
+			switch (choice_change) {
+			case 1:
+			{
+				int search_unique_id;
+				int temp = 1;
+				std::cout << "Введите уникальный идентификатор (числовой) транспорта:";
+				std::cin >> search_unique_id;
+				for (auto iter = data_base.begin(); iter != data_base.end(); iter++, temp++) {
+					if ((*iter)->unique_identificator == search_unique_id) {
+						std::cout << "Номер записи:" << temp << std::endl;
+						print_transport(*iter);
+					}
+				}
+				break;
+			}
+			case 2:
+			{
+				int temp = 1;
+				int search_weight;
+				std::cout << "Введите вес транспорта:";
+				std::cin >> search_weight;
+				for (auto iter = data_base.begin(); iter != data_base.end(); iter++, temp++) {
+					if ((*iter)->weight == search_weight) {
+						std::cout << "Номер записи:" << temp << std::endl;
+						print_transport(*iter);
+					}
+				}
+				break;
+			}
+			case 3:
+			{
+				int search_year;
+				int temp = 1;
+				std::cout << "Введите год выпуска транспорта:";
+				std::cin >> search_year;
+				for (auto iter = data_base.begin(); iter != data_base.end(); iter++, temp++) {
+					if ((*iter)->year_manufacture == search_year) {
+						std::cout << "Номер записи:" << temp << std::endl;
+						print_transport(*iter);
+					}
+				}
+				break;
+			}
+			case 4: 
+			{
+				int temp = 1;
+				std::string search_brand;
+				std::cout << "Введите марку транспорта:";
+				std::cin >> search_brand;
+				for (auto iter = data_base.begin(); iter != data_base.end(); iter++, temp++) {
+					if ((*iter)->brand == search_brand) {
+						std::cout << "Номер записи:" << temp << std::endl;
+						print_transport(*iter);
+					}
+				}
+				break;
+			}	
+			case 5: 
+			{
+				int temp = 1;
+				std::string search_model;
+				std::cout << "Введите модель транспорта:";
+				std::cin >> search_model;
+				for (auto iter = data_base.begin(); iter != data_base.end(); iter++, temp++) {
+					if ((*iter)->model == search_model) {
+						std::cout << "Номер записи:" << temp << std::endl;
+						print_transport(*iter);
+					}
+				}
+				break;
+			}
+			case 6: 
+			{
+				int temp = 1;
+				std::string search_type_transport;
+				std::cout << "Введите тип транспорта:";
+				std::cin >> search_type_transport;
+				for (auto iter = data_base.begin(); iter != data_base.end(); iter++, temp++) {
+					if ((*iter)->type_transport == search_type_transport) {
+						std::cout << "Номер записи:" << temp << std::endl;
+						print_transport(*iter);
+					}
+				}
+				break;
+			}
+			}
 			break;
 		case 6:
+		{
+			print_data_base_infile(data_base);
 			break;
+		}
 		case 7:
 			break;
 		}
@@ -225,4 +349,5 @@ int main()
 		std::cin >> k;
 	}
 }
+//proverka izmemeneni
 
