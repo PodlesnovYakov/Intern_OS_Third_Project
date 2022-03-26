@@ -15,39 +15,39 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Open_Solution_task1.cpp">
+    <ClCompile Include="Source\Boat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Transport.cpp">
+    <ClCompile Include="Source\Car.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Plane.cpp">
+    <ClCompile Include="Source\Open_Solution_task1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Car.cpp">
+    <ClCompile Include="Source\Plane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Spaceship.cpp">
+    <ClCompile Include="Source\Spaceship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Boat.cpp">
+    <ClCompile Include="Source\transport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Transport.h">
+    <ClInclude Include="Source\Boat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Plane.h">
+    <ClInclude Include="Source\Car.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Car.h">
+    <ClInclude Include="Source\Plane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Spaceship.h">
+    <ClInclude Include="Source\Spaceship.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Boat.h">
+    <ClInclude Include="Source\transport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

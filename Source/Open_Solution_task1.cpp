@@ -349,5 +349,4 @@ int main()
 		std::cin >> k;
 	}
 }
-//proverka izmemeneni
 
