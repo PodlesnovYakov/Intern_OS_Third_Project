@@ -32,7 +32,26 @@ void print_data_base(std::vector<Transport*> table) {
 		std::cout << "Вес транспорта:" << (*iter)->weight << std::endl;
 		std::cout << "Год выпуска транспорта:" << (*iter)->year_manufacture << std::endl;
 		std::cout << "Марка транспорта:" << (*iter)->brand << std::endl;
-		std::cout << "Модель транспорта:" << (*iter)->model << std::endl << std::endl;
+		std::cout << "Модель транспорта:" << (*iter)->model << std::endl;
+		if ((*iter)->type_transport == "Машина") {
+			Car* temp = (Car*)(*iter);
+			std::cout << "Объём двигателя:" << temp->engine_size << std::endl;
+			std::cout << "Количество лошадиных сил:" << temp->horsepower << std::endl;
+		}
+		else if ((*iter)->type_transport == "Самолёт") {
+			Plane* temp = (Plane*)(*iter);
+			std::cout << "Размах крыла:" << temp->wingspan << std::endl;
+			std::cout << "Грузоподъемность:" << temp->load_capacity << std::endl;
+		}
+		else if ((*iter)->type_transport == "Катер") {
+			Boat* temp = (Boat*)(*iter);
+			std::cout << "Глубина погружения винта:" << temp->screw_inmmersion_depth << std::endl;
+		}
+		else if ((*iter)->type_transport == "Космический корабль") {
+			Spaceship* temp = (Spaceship*)(*iter);
+			std::cout << "Тип топлива:" << temp->fuel_type<< std::endl;
+		}
+		std::cout << std::endl;
 	}
 }
 void print_data_base_infile(std::vector<Transport*> table) {
@@ -47,7 +66,26 @@ void print_data_base_infile(std::vector<Transport*> table) {
 		inOut << "Вес транспорта:" << (*iter)->weight << std::endl;
 		inOut << "Год выпуска транспорта:" << (*iter)->year_manufacture << std::endl;
 		inOut << "Марка транспорта:" << (*iter)->brand << std::endl;
-		inOut << "Модель транспорта:" << (*iter)->model << std::endl << std::endl;
+		inOut << "Модель транспорта:" << (*iter)->model << std::endl;
+		if ((*iter)->type_transport == "Машина") {
+			Car* temp = (Car*)(*iter);
+			inOut << "Объём двигателя:" << temp->engine_size << std::endl;
+			inOut << "Количество лошадиных сил:" << temp->horsepower << std::endl;
+		}
+		else if ((*iter)->type_transport == "Самолёт") {
+			Plane* temp = (Plane*)(*iter);
+			inOut << "Размах крыла:" << temp->wingspan << std::endl;
+			inOut << "Грузоподъемность:" << temp->load_capacity << std::endl;
+		}
+		else if ((*iter)->type_transport == "Катер") {
+			Boat* temp = (Boat*)(*iter);
+			inOut << "Глубина погружения винта:" << temp->screw_inmmersion_depth << std::endl;
+		}
+		else if ((*iter)->type_transport == "Космический корабль") {
+			Spaceship* temp = (Spaceship*)(*iter);
+			inOut << "Тип топлива:" << temp->fuel_type << std::endl;
+		}
+		inOut << std::endl;
 	}
 }
 bool comp_id(Transport *a, Transport* b) {
@@ -90,7 +128,7 @@ int main()
 			<< "Нажмите 2, если хотите редактировать запись транспортного средства." << std::endl
 			<< "Нажмите 3, если хотите удалить запись транспортного средства." << std::endl
 			<< "Нажмите 4, если хотите отобразить весь список записей с сортировкой по выбранному полю." << std::endl
-			<< "Нажмите 5, если выполнить поиск по выбранному полю." << std::endl
+			<< "Нажмите 5, если выполнить поиск по выбранному полю." << std::endl 
 			<< "Нажмите 6, если хотите сохранить все записи в файл." << std::endl
 			<< "Нажмите 7, если хотите загрузить все записи из файла." << std::endl;
 		std::cin >> choice;
@@ -120,9 +158,9 @@ int main()
 				Plane* a = new Plane();
 				(*a).type_transport = "Самолёт";
 				fill_blank(a);
-				std::cout << "Введите грузоподъмность самолёта:";
+				std::cout << "Введите грузоподъмность транспорта:";
 				std::cin >> (*a).load_capacity;
-				std::cout << "Введите размах крыла самолёта:";
+				std::cout << "Введите размах крыла транспорта:";
 				std::cin >> (*a).wingspan;
 				data_base.push_back(a);
 				break;
@@ -132,7 +170,7 @@ int main()
 				Boat* a = new Boat();
 				(*a).type_transport = "Катер";
 				fill_blank(a);
-				std::cout << "Введите глубину погружения винта катера:";
+				std::cout << "Введите глубину погружения винта транспорта:";
 				std::cin >> (*a).screw_inmmersion_depth;
 				data_base.push_back(a);
 				break;
@@ -142,7 +180,7 @@ int main()
 				Spaceship* a = new Spaceship();
 				(*a).type_transport = "Космический корабль";
 				fill_blank(a);
-				std::cout << "Введите тип топлива космического корабля:";
+				std::cout << "Введите тип топлива транспорта:";
 				std::cin >> (*a).fuel_type;
 				data_base.push_back(a);
 				break;
@@ -157,9 +195,9 @@ int main()
 			int unique_id;
 			std::cout << "Введите уникальный индетификатор транспорта, информацию о котором вы хотите отредактировать:";
 			std::cin >> unique_id;
-			int temp;
+			std::vector<Transport*>::iterator it;
 			for (auto iter = data_base.begin(); iter != data_base.end(); iter++) {
-				if ((*iter)->unique_identificator == unique_id) temp = iter - data_base.begin();
+				if ((*iter)->unique_identificator == unique_id) it = iter;
 			}
 			std::cout << "Введите 1, если хотите изменить уникальный идентификатор (числовой) транспорта." << std::endl
 				<< "Введите 2, если хотите изменить вес транспорта." << std::endl
@@ -172,24 +210,65 @@ int main()
 			switch (choice_change) {
 			case 1:
 				std::cout << "Введите новый уникальный идентификатор (числовой) транспорта:";
-				std::cin >> (*(data_base[temp])).unique_identificator;
+				std::cin >> (*it)->unique_identificator;
 				break;
 			case 2:
 				std::cout << "Введите новый вес транспорта:";
-				std::cin >> (*(data_base[temp])).weight;
+				std::cin >> (*it)->weight;
 				break;
 			case 3:
 				std::cout << "Введите новый год выпуска:";
-				std::cin >> (*(data_base[temp])).year_manufacture;
+				std::cin >> (*it)->year_manufacture;
 				break;
 			case 4:
 				std::cout << "Введите новую марку транспорта:";
-				std::cin >> (*(data_base[temp])).brand;
+				std::cin >> (*it)->brand;
 				break;
 			case 5:
 				std::cout << "Введите новую модель транспорта:";
-				std::cin >> (*(data_base[temp])).model;
+				std::cin >> (*it)->model;
 				break;
+			case 6:
+			{
+				if ((*it)->type_transport == "Машина") {
+					Car* temp = (Car*)(*it);
+					int res;
+					std::cout << "Введите 1 - если хотите изменить объём двигателя, 0 - если хотите изменить количество лошадиных сил." << std::endl;
+					std::cin >> res;
+					if (res) {
+						std::cout << "Введите новый объём двигателя транспорта:";
+						std::cin>>temp->engine_size;
+					}
+					else {
+						std::cout << "Введите новое количество лошадиных сил транспорта:";
+						std::cin>>temp->horsepower;
+					}
+				}
+				else if ((*it)->type_transport == "Самолёт") {
+					Plane* temp = (Plane*)(*it);
+					int res;
+					std::cout << "Введите 1 - если хотите изменить размах крыла, 0 - если хотите изменить грузоподъемность." << std::endl;
+					std::cin >> res;
+					if (res) {
+						std::cout << "Введите новый размах крыла транспорта:";
+						std::cin>>temp->wingspan;
+					}
+					else {
+						std::cout << "Введите новую грузоподъемность транспорта:";
+						std::cin>>temp->load_capacity;
+					}
+				}
+				else if ((*it)->type_transport == "Катер") {
+					Boat* temp = (Boat*)(*it);
+					std::cout << "Введите новую глубину погружения винта:";
+					std::cin>>temp->screw_inmmersion_depth;
+				}
+				else if ((*it)->type_transport == "Космический корабль") {
+					Spaceship* temp = (Spaceship*)(*it);
+					std::cout << "Введите новый тип топлива:";
+					std::cin>>temp->fuel_type;
+				}
+			}
 			}
 			break;
 		}
