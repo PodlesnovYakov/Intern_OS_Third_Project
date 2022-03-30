@@ -1,15 +1,18 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <vector>
 class Transport
 {
 public:
-	int unique_identificator;
-	std::string type_transport;
+	std::string typeTransport;
 	int weight;
-	int year_manufacture;
+	int yearManufacture;
 	std::string brand;
 	std::string model;
-
+	virtual void printTransport();
+	virtual void fillBlank();
+	
 };
 

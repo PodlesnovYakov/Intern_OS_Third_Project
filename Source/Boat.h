@@ -4,6 +4,9 @@ class Boat :
     public Transport
 {
 public:
-    int screw_inmmersion_depth;
+    int screwInmmersionDepth;
+    void printTransport() override;
+    void fillBlank() override;
+    void fileFillBoat(std::vector<std::string>);
 };
 

@@ -6,6 +6,9 @@ class Plane:
 {
 public:
 	int wingspan;
-	int load_capacity;
+	int loadCapacity;
+	void printTransport() override;
+	void fillBlank() override;
+	void fileFillPlane(std::vector<std::string>);
 };
 

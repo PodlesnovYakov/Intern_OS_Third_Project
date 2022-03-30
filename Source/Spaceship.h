@@ -4,6 +4,9 @@ class Spaceship :
     public Transport
 {
 public:
-    std::string fuel_type;
+    std::string fuelType;
+    void printTransport() override;
+    void fillBlank() override;
+    void fileFillSpaceship(std::vector<std::string>);
 };
 
